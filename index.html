@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nadeline AI 🌟</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      color: gold;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+    }
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: black;
+      z-index: 0;
+    }
+    #intro {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-size: 2rem;
+      animation: shake 1s infinite;
+      z-index: 2;
+    }
+    @keyframes shake {
+      0% { transform: translate(1px, 1px) rotate(0deg); }
+      10% { transform: translate(-1px, -2px) rotate(-1deg); }
+      20% { transform: translate(-3px, 0px) rotate(1deg); }
+      30% { transform: translate(3px, 2px) rotate(0deg); }
+      40% { transform: translate(1px, -1px) rotate(1deg); }
+      50% { transform: translate(-1px, 2px) rotate(-1deg); }
+      60% { transform: translate(-3px, 1px) rotate(0deg); }
+      70% { transform: translate(3px, 1px) rotate(-1deg); }
+      80% { transform: translate(-1px, -1px) rotate(1deg); }
+      90% { transform: translate(1px, 2px) rotate(0deg); }
+      100% { transform: translate(1px, -2px) rotate(-1deg); }
+    }
+    #chat-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      padding-top: 50px;
+      position: relative;
+      z-index: 3;
+    }
+    .chatbox {
+      width: 90%;
+      max-width: 600px;
+      height: 65vh;
+      background: rgba(255, 215, 0, 0.1);
+      border-radius: 20px;
+      padding: 20px;
+      overflow-y: auto;
+      box-shadow: 0 8px 32px 0 rgba(255, 215, 0, 0.37);
+      backdrop-filter: blur(10px);
+    }
+    .chatlog {
+      margin-bottom: 10px;
+    }
+    #inputArea {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    input[type="text"] {
+      width: 65%;
+      padding: 15px;
+      border-radius: 25px;
+      border: none;
+      font-size: 16px;
+      background: black;
+      color: gold;
+      border: 1px solid gold;
+    }
+    button {
+      padding: 15px 25px;
+      margin-left: 10px;
+      border-radius: 25px;
+      border: none;
+      background-color: gold;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #ffd700;
+    }
+    #powered {
+      margin-top: 20px;
+      font-size: 14px;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="particles-js"></div>
+
+<div id="intro">
+  <div id="intro-text"></div>
+</div>
+
+<div id="chat-container">
+  <h1>Nadeline AI 🌟</h1>
+  <div class="chatbox" id="chatbox">
+    <!-- Chat appears here -->
+  </div>
+
+  <div id="inputArea">
+    <input type="text" id="userInput" placeholder="Ask anything...">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <div id="powered">Powered by Nadeline 🌟</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script>
+  const apiKey = "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"; // <<<--- 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
+
+  function typeWriter(text, i, callback) {
+    if (i < text.length) {
+      document.getElementById("intro-text").innerHTML = text.substring(0, i+1);
+      setTimeout(() => typeWriter(text, i + 1, callback), 100);
+    } else {
+      callback();
+    }
+  }
+
+  window.onload = function() {
+    typeWriter("⚡ Nadeline is waking up...", 0, function() {
+      setTimeout(() => {
+        document.getElementById('intro').style.display = 'none';
+        document.getElementById('chat-container').style.display = 'flex';
+      }, 1500);
+    });
+  };
+
+  async function sendMessage() {
+    const input = document.getElementById("userInput");
+    const chatbox = document.getElementById("chatbox");
+
+    const userText = input.value;
+    if (userText.trim() === "") return;
+
+    const userMsg = document.createElement("div");
+    userMsg.className = "chatlog";
+    userMsg.innerHTML = "<b>You:</b> " + userText;
+    chatbox.appendChild(userMsg);
+    input.value = "";
+
+    chatbox.scrollTop = chatbox.scrollHeight;
+
+    const loadingMsg = document.createElement("div");
+    loadingMsg.className = "chatlog";
+    loadingMsg.innerHTML = "<b>Nadeline AI:</b> <i>Typing...</i>";
+    chatbox.appendChild(loadingMsg);
+    chatbox.scrollTop = chatbox.scrollHeight;
+
+    let finalMessage = "";
+
+    if (userText.toLowerCase().includes("nadeline")) {
+      finalMessage = "🌱 Nadeline is a futuristic sustainable city with clean energy, smart infrastructure, zero waste policy, biodiversity love, and digital innovation for everyone.";
+    } else {
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${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}`
+        },
+        body: JSON.stringify({
+          model: "gpt-3.5-turbo",
+          messages: [{ role: "user", content: userText }],
+          temperature: 0.7,
+          max_tokens: 150
+        })
+      });
+
+      const data = await response.json();
+      finalMessage = data.choices[0]?.message?.content || "Oops, I couldn't find an answer!";
+    }
+
+    loadingMsg.innerHTML = "<b>Nadeline AI:</b> " + finalMessage;
+    chatbox.scrollTop = chatbox.scrollHeight;
+  }
+
+  particlesJS("particles-js", {
+    "particles": {
+      "number": {
+        "value": 50
+      },
+      "size": {
+        "value": 3
+      },
+      "color": {
+        "value": "#ffd700"
+      },
+      "move": {
+        "speed": 1
+      },
+      "line_linked": {
+        "enable": false
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
